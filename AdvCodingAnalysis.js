@@ -188,8 +188,98 @@ function mergeSortedArrays(arr1, arr2) {
   // Example usage:
   const inputString = "leetcode";
   const firstNonRepeatingChar = firstNonRepeatingCharacter(inputString);
-  console.log(firstNonRepeatingChar);
+  // console.log(firstNonRepeatingChar);
 
 
 /*--------------------------------------------------------------------------------------------------------------------------------------------*/
 
+  // 7. Find the length of the longest palindromic substring.
+
+function longestPalindromicSubstring(s) {
+  if (!s) {
+      return 0;
+  }
+
+  let start = 0, end = 0;
+
+  function expandAroundCenter(left, right) {
+      while (left >= 0 && right < s.length && s[left] === s[right]) {
+          left--;
+          right++;
+      }
+      return right - left - 1;
+  }
+
+  for (let i = 0; i < s.length; i++) {
+      let len1 = expandAroundCenter(i, i);
+      let len2 = expandAroundCenter(i, i + 1);
+      let maxLen = Math.max(len1, len2);
+
+      if (maxLen > end - start) {
+          start = i - Math.floor((maxLen - 1) / 2);
+          end = i + Math.floor(maxLen / 2);
+      }
+  }
+
+  return s.substring(start, end + 1);
+}
+
+// Example usage:
+const s = "babababd";
+// console.log(longestPalindromicSubstring(s));
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------*/
+
+  // 8. Determine if 2nd string is an anagram of 1st string.
+  
+  function isAnagram(str1, str2) {
+    str1 = str1.replace(/ /g, '').toLowerCase();
+    str2 = str2.replace(/ /g, '').toLowerCase();
+
+    return str1.split('').sort().join('') === str2.split('').sort().join('');
+}
+
+// Example usage:
+const string1 = "who";
+const string2 = "how";
+
+if (isAnagram(string1, string2)) {
+    // console.log(`"${string2}" is an anagram of "${string1}".`);
+} else {
+    // console.log(`"${string2}" is not an anagram of "${string1}".`);
+}
+
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------*/
+
+  // 9. Check if a String Matches a Pattern
+
+  function patternMatching(pattern, str) {
+    const patternLength = pattern.length;
+    const strArr = str.split(" ");
+    
+    if (patternLength !== strArr.length) {
+      return false;
+    }
+    
+    const patternMap = new Map();
+    const wordMap = new Map();
+  
+    for (let i = 0; i < patternLength; i++) {
+      const char = pattern[i];
+      const word = strArr[i];
+  
+      if (!patternMap.has(char) && !wordMap.has(word)) {
+        patternMap.set(char, word);
+        wordMap.set(word, char);
+      } else {
+        if (patternMap.get(char) !== word || wordMap.get(word) !== char) {
+          return false;
+        }
+      }
+    }
+    
+    return true;
+  }
+  
+  // console.log(patternMatching("abba", "dog cat cat dog"));
